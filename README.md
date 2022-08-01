@@ -43,4 +43,4 @@ To Be determined/ edited as the Hackathon progresses
 ## Team Members
 
 Emily Page | empage@uab.edu| Team Leader  
-Shaurita Hutchins | shutchins@uab.edu | Co-leader
+
