@@ -91,11 +91,12 @@ library("vsn")
 meanSdPlot(assay(ntd))
 ```
 ```{r}
-counts <- counts(dds['ENSG00000139352.3',], normalized = TRUE)
+col = c("Primary Tumor"= "#481567FF", "Recurrent Tumor"= "#2D708EFF", "Solid Tissue Normal"= "#29AF7FFF")
+counts <- counts(dds['ENSG00000258886.2',], normalized = TRUE)
 m <- list(counts = as.numeric(counts), group= sampleTable$condition)
 m <- as_tibble(m)
 q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group)) + geom_jitter(width = 0.1) + aes(color= group) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + theme(text = element_text(size = 13)) + theme(axis.text.y = element_text(size = 17)) + theme(legend.position="none")
-q <- q + labs(y = "Normalized Counts ", title = "Expression of ASCL1")
+q <- q + labs(y = "Normalized Counts ", title = "Expression of HIGD1AP17")
 q
 ```
 ```{r}
