@@ -1,0 +1,104 @@
+---
+title: "Recount3_UCEC"
+output: html_document
+date: "2022-08-05"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library("recount3")
+```
+```{r}
+endometrial_meta <- endometrial_recount3@colData@listData
+```
+
+
+```{r}
+endometrial_recount3 <- recount3::create_rse_manual(
+  project = "UCEC",
+  project_home = "data_sources/tcga",
+  organism = "human",
+  annotation = "gencode_v26",
+  type = "gene"
+)
+```
+```{r message= FALSE, warning= FALSE, echo=FALSE}
+library(tximport)
+library(GenomicFeatures)
+library(TxDb.Hsapiens.UCSC.hg19.knownGene)
+library(DESeq2)
+library(tibble)
+library(ggplot2)
+```
+
+
+```{r}
+endometrial_counts <- endometrial_recount3@assays@data@listData$raw_counts
+```
+
+```{r}
+Normal_vs_Tumor <- endometrial_meta[["tcga.gdc_cases.samples.sample_type"]]
+```
+
+```{r}
+sampleTable <- data.frame(sampleName = endometrial_meta[["tcga.gdc_cases.case_id"]],
+                          condition = Normal_vs_Tumor)
+sampleTable$condition <- factor(sampleTable$condition)
+dds <- DESeqDataSetFromMatrix(endometrial_counts, sampleTable, ~condition)
+dds <- DESeq(dds)
+res <- results(dds)
+```
+```{r}
+res
+```
+```{r}
+resOrdered <- res[order(res$pvalue),]
+summary(res)
+```
+
+```{r}
+res05 <- results(dds, alpha=0.05)
+summary(res05)
+```
+
+```{r}
+plotMA(res, ylim= c(-2,2))
+```
+```{r}
+plotCounts(dds, gene=which.min(res$padj), intgroup="condition")
+```
+```{r}
+resultsNames(dds)
+```
+
+```{r}
+resLFC <- lfcShrink(dds, coef="condition_Solid.Tissue.Normal_vs_Primary.Tumor")
+```
+```{r}
+resLFC
+```
+
+
+```{r}
+plotMA(resLFC, ylim= c(-2,2))
+```
+```{r}
+ntd <- normTransform(dds)
+library("vsn")
+meanSdPlot(assay(ntd))
+```
+```{r}
+counts <- counts(dds['ENSG00000139352.3',], normalized = TRUE)
+m <- list(counts = as.numeric(counts), group= sampleTable$condition)
+m <- as_tibble(m)
+q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group)) + geom_jitter(width = 0.1) + aes(color= group) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + theme(text = element_text(size = 13)) + theme(axis.text.y = element_text(size = 17)) + theme(legend.position="none")
+q <- q + labs(y = "Normalized Counts ", title = "Expression of ASCL1")
+q
+```
+```{r}
+write.csv(res,"~/Desktop/results_endometrial_cancer.csv")
+```
+
