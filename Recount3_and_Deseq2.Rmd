@@ -11,10 +11,6 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 library("recount3")
 ```
-```{r}
-endometrial_meta <- endometrial_recount3@colData@listData
-```
-
 
 ```{r}
 endometrial_recount3 <- recount3::create_rse_manual(
@@ -24,6 +20,10 @@ endometrial_recount3 <- recount3::create_rse_manual(
   annotation = "gencode_v26",
   type = "gene"
 )
+```
+
+```{r}
+endometrial_meta <- endometrial_recount3@colData@listData
 ```
 
 ```{r message= FALSE, warning= FALSE, echo=FALSE}
