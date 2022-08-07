@@ -1,3 +1,3 @@
 # results
-
-:exclamation: _This folder is for computational experiments performed on the data. Ensure any analysis or results are appropriately named (no spaces in names; use underscores or dashes) and in this folder. Also, you may include any figures here or in separate folder._ :exclamation: 
+This folder has our genomic analysis results in it. 
+You will find rmarkdowns for the following: DESeq2 for Endometrial and Ovarian Cancer, and MAFtools for Endometrial Cancer 
