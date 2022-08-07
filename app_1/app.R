@@ -75,7 +75,7 @@ server <- function(input, output) {
     oncoplot(maf = endometrial_maf, top = 10)
   })
   
-  output$titvplot <- renderPlot({
+  output$titv <- renderPlot({
     plotTiTv(res = laml.titv)
   })
   
