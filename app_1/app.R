@@ -2,43 +2,7 @@ library(shiny)
 library(shinythemes)
 
 
-# library(maftools)
-# endometrial_maf <- tcgaLoad(study= "UCEC")
-
-
-
 ui <- fluidPage(
-  #Sidebar panel for inputs ----
-  #  sidebarPanel( 
-  #   checkboxGroupInput("Data_Type", label = h3("Data Types to View"), choices = c("Summary", "WXS", "RNAseq", "scRNAseq", "Cell Line"), selected = NULL)),
-  
-  # App title ----
-  # titlePanel("ReproCanAtlas"),
-    
-  # Main panel for displaying outputs ----
-  #mainPanel(
-  #splitLayout(plotOutput(outputId = "summary"),  
-  #  plotOutput(outputId = "oncoplot"))
-  #)
-  
-  # Display Panels ----
-  # sidebarLayout(
-  #   sidebarPanel(
-  #     selectInput("choice", label=h3("Data Types to View"), choices=c("Summary", "WXS", "RNAseq", "scRNAseq", "Cell Line"))
-  #   ),
-  #   mainPanel(
-  #     tabsetPanel(
-  #       id="main",
-  #       type="hidden",
-  #       tabPanelBody("Summary", "Panel 1 content"),
-  #       tabPanelBody("WXS", "Panel 2 content"),
-  #       tabPanelBody("RNASeq", "Panel 3 content"),
-  #       tabPanelBody("scRNASeq", "Panel 2 content"),
-  #       tabPanelBody("Cell Line", "Panel 2 content")
-  #     )
-  #   )
-  # )
-  
   shinythemes::themeSelector(),
   navbarPage(
     "ReproCanAtlas",
@@ -78,7 +42,6 @@ ui <- fluidPage(
 )
 
 
-# Define server logic required to ----
 server <- function(input, output) {
   output$deseq_summary <- renderPrint({
     summary(results(dds, alpha=input$alpha))

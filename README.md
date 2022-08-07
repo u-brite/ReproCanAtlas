@@ -36,7 +36,15 @@ The atlas can be used for preliminary analysis by noncomputational groups as wel
 The goal is to be as user friendly as possible 
 
 ## Future Directions
-The goal is to get this atlas started so that we can add multiple female reproductive cancers to it. 
+The goal is to get this atlas started so that we can add multiple female reproductive cancers to it.
+We will also need to do the following 
+  - Find better single cell for Endometrial Cancer (the one we had included some peculiar FASTQs)
+  - Make the Shiny app interactive 
+        -   Make where you can select data types and the graphs move  
+        -   Make where you can select genes for RNAseq to view DEGs 
+        -   Make an option to select cancer types and be able to select multiple Genomic options and multiple cancers. 
+  - Include quantitative data underneath the graphs. 
+
 
 ### Installation of Packages 
 
@@ -53,12 +61,22 @@ Packages within R
  
 
 ### Requirements
-To Be determined/ edited as the Hackathon progresses 
+Same as Installation
 
 ## Results
-:exclamation: _If your project yielded or intends to yield some novel analysis, please include them in your readme. It can be named something other than results as well._ :exclamation:
+We were able to finish 
+ - a basic shiny app with some of the options present 
+ - DESeq2 analysis for TCGA-OV and TCGA-UCEC 
+ - MAFtools based analysis for TCGA-UCEC 
+
 
 ## Team Members
 
-Emily Page | empage@uab.edu| Team Leader  
+Emily Page | empage@uab.edu| Team Leader
+
+Ryan Strickland | rgstrick@uab.edu | Team Participant
+
+Fion Chan | fion.sun@gmail.com | Team Participant
+
+Ayesha Sanjana | sanjanaayesha@yahoo.com | Team Participant
 
