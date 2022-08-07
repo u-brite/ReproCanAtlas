@@ -65,7 +65,7 @@ Same as Installation
 
 ## Results
 We were able to finish 
- - a VERY basic shiny app with some of the options present 
+ - a basic shiny app with some of the options present 
  - DESeq2 analysis for TCGA-OV and TCGA-UCEC 
  - MAFtools based analysis for TCGA-UCEC 
 
