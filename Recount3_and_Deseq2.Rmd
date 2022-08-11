@@ -48,59 +48,80 @@ Normal_vs_Tumor <- endometrial_meta[["tcga.gdc_cases.samples.sample_type"]]
 sampleTable <- data.frame(sampleName = endometrial_meta[["tcga.gdc_cases.case_id"]],
                           condition = Normal_vs_Tumor)
 sampleTable$condition <- factor(sampleTable$condition)
-dds <- DESeqDataSetFromMatrix(endometrial_counts, sampleTable, ~condition)
-dds <- DESeq(dds)
-res <- results(dds)
+endometrial_dds <- DESeqDataSetFromMatrix(endometrial_counts, sampleTable, ~condition)
+endometrial_dds <- DESeq(endometrial_dds)
+endometrial_res <- results(endometrial_dds)
+
+saveRDS(endometrial_dds, file = "endometrial_dds.rds")
+saveRDS(endometrial_res, file = "endometrial_res.rds")
+
 ```
 
 ```{r}
-res
+endometrial_res
 ```
 
 ```{r}
-resOrdered <- res[order(res$pvalue),]
-summary(res)
+endometrial_resOrdered <- endometrial_res[order(endometrial_res$pvalue),]
+endometrial_resOrdered
+```
+
+``` {r}
+summary(endometrial_res)
 ```
 
 ```{r}
-res05 <- results(dds, alpha=0.05)
-summary(res05)
+endometrial_res05 <- results(endometrial_dds, alpha=0.05)
+summary(endometrial_res05)
 ```
 
 ```{r}
-plotMA(res, ylim= c(-2,2))
+plotMA(endometrial_res, ylim= c(-2,2))
 ```
 
 ```{r}
-plotCounts(dds, gene=which.min(res$padj), intgroup="condition")
+# normalized count vs. group
+plotCounts(endometrial_dds, gene=which.min(endometrial_res$padj), intgroup="condition")
 ```
 
 ```{r}
-resultsNames(dds)
+resultsNames(endometrial_dds)
 ```
 
 ```{r}
-resLFC <- lfcShrink(dds, coef="condition_Solid.Tissue.Normal_vs_Primary.Tumor")
+lfc_citation <- capture.output(
+  endometrial_resLFC <- lfcShrink(endometrial_dds, coef="condition_Solid.Tissue.Normal_vs_Primary.Tumor")
+)
+```
+```{r}
+lfc_citation <- "using 'apeglm' for LFC shrinkage. If used in published research, please cite:
+    Zhu, A., Ibrahim, J.G., Love, M.I. (2018) Heavy-tailed prior distributions for
+    sequence count data: removing the noise and preserving large differences.
+    Bioinformatics. https://doi.org/10.1093/bioinformatics/bty895"
+```
+
+
+```{r}
+endometrial_resLFC
+```
+
+
+```{r}
+# log2 fold change vs. mean count
+plotMA(endometrial_resLFC, ylim= c(-2,2))
 ```
 
 ```{r}
-resLFC
-```
-
-
-```{r}
-plotMA(resLFC, ylim= c(-2,2))
-```
-
-```{r}
-ntd <- normTransform(dds)
+# rank vs. sd
+endometrial_ntd <- normTransform(endometrial_dds)
 library("vsn")
-meanSdPlot(assay(ntd))
+library("hexbin")
+meanSdPlot(assay(endometrial_ntd))
 ```
 
 ```{r}
 col = c("Primary Tumor"= "#481567FF", "Recurrent Tumor"= "#2D708EFF", "Solid Tissue Normal"= "#29AF7FFF")
-counts <- counts(dds['ENSG00000258886.2',], normalized = TRUE)
+counts <- counts(endometrial_dds['ENSG00000258886.2',], normalized = TRUE)
 m <- list(counts = as.numeric(counts), group= sampleTable$condition)
 m <- as_tibble(m)
 q <- ggplot(m, aes(group, counts)) + geom_boxplot(aes(fill= group)) + geom_jitter(width = 0.1) + aes(color= group) + scale_fill_manual(values = alpha(col,.3)) +scale_color_manual(values = alpha(col, 1.0)) + theme(text = element_text(size = 13)) + theme(axis.text.y = element_text(size = 17)) + theme(legend.position="none")
@@ -109,5 +130,6 @@ q
 ```
 
 ```{r}
-write.csv(res,"~/Desktop/results_endometrial_cancer.csv")
+# write.csv(res,"results/results_endometrial_cancer.csv")
+save.image(file = "app_1/data/endometrial_workspace.RData")
 ```

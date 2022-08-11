@@ -13,8 +13,15 @@ library(maftools)
 ```
 
 ```{r}
-endometrial_maf <- tcgaLoad(study= "UCEC")
+tcga_citation <- capture.output(
+  endometrial_maf <- tcgaLoad(study= "UCEC")
+)
+saveRDS(endometrial_maf, file = "endometrial_maf.rds")
 ```
+```{r}
+tcga_citation <- "UCEC. Please cite: https://doi.org/10.1016/j.cels.2018.03.002 for reference"
+```
+
 
 ```{r}
 #Shows sample summry.
@@ -75,13 +82,14 @@ somaticInteractions(maf = endometrial_maf, top = 25, pvalue = c(0.05, 0.1))
 ```
 
 ```{r}
-laml.sig = oncodrive(maf = endometrial_maf, AACol = 'HGVSp_Short', minMut = 5, pvalMethod = 'zscore')
+laml.sig <- oncodrive(maf = endometrial_maf, AACol = 'HGVSp_Short', minMut = 5, pvalMethod = 'zscore')
 ```
 
 ```{r}
 plotOncodrive(res = laml.sig, fdrCutOff = 0.1, useFraction = TRUE, labelSize = 0.5)
 ```
 
-
-
-
+```{r}
+saveRDS(laml.sig, file = "endometrial_oncodrive.rds")
+save.image(file = "app_1/data/endometrial_workspace.RData")
+```

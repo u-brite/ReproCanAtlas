@@ -10,3 +10,5 @@ BiocManager::install("DESeq2")
 BiocManager::install("maftools")
 BiocManager::install("apeglm")
 install.packages("tidyverse")
+install.packages("shinycssloaders")
+
